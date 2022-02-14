@@ -44,6 +44,10 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   String get positionTitle;
 
   @nullable
+  @BuiltValueField(wireName: 'like_count')
+  int get likeCount;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -56,7 +60,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..bio = ''
     ..experienceLevel = ''
     ..likedPosts = false
-    ..positionTitle = '';
+    ..positionTitle = ''
+    ..likeCount = 0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -90,6 +95,7 @@ Map<String, dynamic> createUsersRecordData({
   String experienceLevel,
   bool likedPosts,
   String positionTitle,
+  int likeCount,
 }) =>
     serializers.toFirestore(
         UsersRecord.serializer,
@@ -103,4 +109,5 @@ Map<String, dynamic> createUsersRecordData({
           ..bio = bio
           ..experienceLevel = experienceLevel
           ..likedPosts = likedPosts
-          ..positionTitle = positionTitle));
+          ..positionTitle = positionTitle
+          ..likeCount = likeCount));

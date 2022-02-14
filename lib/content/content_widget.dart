@@ -1,8 +1,10 @@
+import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,7 +39,7 @@ class _ContentWidgetState extends State<ContentWidget> {
               width: 50,
               height: 50,
               child: CircularProgressIndicator(
-                color: FlutterFlowTheme.primaryColor,
+                color: FlutterFlowTheme.of(context).primaryColor,
               ),
             ),
           );
@@ -72,7 +74,7 @@ class _ContentWidgetState extends State<ContentWidget> {
             ),
             title: Text(
               'Complian',
-              style: FlutterFlowTheme.subtitle1,
+              style: FlutterFlowTheme.of(context).subtitle1,
             ),
             actions: [],
             centerTitle: false,
@@ -102,12 +104,12 @@ class _ContentWidgetState extends State<ContentWidget> {
                       Expanded(
                         child: Text(
                           contentJobPostsRecord.jobName,
-                          style: FlutterFlowTheme.title2.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFF090F13),
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: FlutterFlowTheme.of(context).title2.override(
+                                fontFamily: 'Lexend Deca',
+                                color: Color(0xFF090F13),
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ),
                     ],
@@ -121,12 +123,15 @@ class _ContentWidgetState extends State<ContentWidget> {
                       Expanded(
                         child: Text(
                           '10:00am',
-                          style: FlutterFlowTheme.subtitle2.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .subtitle2
+                              .override(
+                                fontFamily: 'Lexend Deca',
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ),
                     ],
@@ -140,12 +145,13 @@ class _ContentWidgetState extends State<ContentWidget> {
                       Expanded(
                         child: Text(
                           contentJobPostsRecord.jobDescription,
-                          style: FlutterFlowTheme.bodyText2.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFF8B97A2),
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyText2.override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Color(0xFF8B97A2),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                         ),
                       ),
                     ],
@@ -159,12 +165,15 @@ class _ContentWidgetState extends State<ContentWidget> {
                       Expanded(
                         child: Text(
                           '',
-                          style: FlutterFlowTheme.bodyText2.override(
-                            fontFamily: 'Lexend Deca',
-                            color: FlutterFlowTheme.primaryColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText2
+                              .override(
+                                fontFamily: 'Lexend Deca',
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
                         ),
                       ),
                     ],
@@ -182,7 +191,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                             width: 50,
                             height: 50,
                             child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.primaryColor,
+                              color: FlutterFlowTheme.of(context).primaryColor,
                             ),
                           ),
                         );
@@ -236,13 +245,14 @@ class _ContentWidgetState extends State<ContentWidget> {
                                         child: Text(
                                           topFriendsUsersRecord.displayName,
                                           textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.bodyText2
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText2
                                               .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Color(0xFF95A1AC),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                                                fontFamily: 'Lexend Deca',
+                                                color: Color(0xFF95A1AC),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                              ),
                                         ),
                                       ),
                                     ),
@@ -258,27 +268,71 @@ class _ContentWidgetState extends State<ContentWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 24),
-                  child: FFButtonWidget(
-                    onPressed: () {
-                      print('ButtonPrimary pressed ...');
-                    },
-                    text: 'Verify',
-                    options: FFButtonOptions(
-                      width: 300,
-                      height: 60,
-                      color: FlutterFlowTheme.primaryColor,
-                      textStyle: FlutterFlowTheme.title3.override(
-                        fontFamily: 'Lexend Deca',
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: 1,
-                      ),
-                      borderRadius: 12,
+                  child: StreamBuilder<List<SavePostRecord>>(
+                    stream: querySavePostRecord(
+                      singleRecord: true,
                     ),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              color: FlutterFlowTheme.of(context).primaryColor,
+                            ),
+                          ),
+                        );
+                      }
+                      List<SavePostRecord> buttonPrimarySavePostRecordList =
+                          snapshot.data;
+                      // Return an empty Container when the document does not exist.
+                      if (snapshot.data.isEmpty) {
+                        return Container();
+                      }
+                      final buttonPrimarySavePostRecord =
+                          buttonPrimarySavePostRecordList.isNotEmpty
+                              ? buttonPrimarySavePostRecordList.first
+                              : null;
+                      return FFButtonWidget(
+                        onPressed: () async {
+                          final savePostUpdateData = {
+                            ...createSavePostRecordData(
+                              postSaved: contentJobPostsRecord.reference,
+                              user: contentJobPostsRecord.postedBy,
+                            ),
+                            'count_post': FieldValue.increment(1),
+                          };
+                          await buttonPrimarySavePostRecord.reference
+                              .update(savePostUpdateData);
+
+                          final jobPostsUpdateData = {
+                            'like_count': FieldValue.increment(1),
+                          };
+                          await contentJobPostsRecord.reference
+                              .update(jobPostsUpdateData);
+                        },
+                        text: 'Verify',
+                        options: FFButtonOptions(
+                          width: 300,
+                          height: 60,
+                          color: FlutterFlowTheme.of(context).primaryColor,
+                          textStyle:
+                              FlutterFlowTheme.of(context).title3.override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1,
+                          ),
+                          borderRadius: 12,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

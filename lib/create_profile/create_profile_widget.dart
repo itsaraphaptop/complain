@@ -48,16 +48,16 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
         title: Text(
           'Create Profile',
           textAlign: TextAlign.start,
-          style: FlutterFlowTheme.subtitle1.override(
-            fontFamily: 'Lexend Deca',
-            color: Color(0xFF090F13),
-          ),
+          style: FlutterFlowTheme.of(context).subtitle1.override(
+                fontFamily: 'Lexend Deca',
+                color: Color(0xFF090F13),
+              ),
         ),
         actions: [],
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: FlutterFlowTheme.tertiaryColor,
+      backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
       body: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
         child: SingleChildScrollView(
@@ -100,10 +100,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Full Name',
-                            labelStyle: FlutterFlowTheme.title3.override(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFFABB3BA),
-                            ),
+                            labelStyle:
+                                FlutterFlowTheme.of(context).title3.override(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFFABB3BA),
+                                    ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0x00000000),
@@ -125,10 +126,10 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                               ),
                             ),
                           ),
-                          style: FlutterFlowTheme.title3.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFFF1F4F8),
-                          ),
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Lexend Deca',
+                                color: Color(0xFFF1F4F8),
+                              ),
                         ),
                       ),
                     ),
@@ -151,10 +152,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Postition Title',
-                          labelStyle: FlutterFlowTheme.title3.override(
-                            fontFamily: 'Poppins',
-                            color: Color(0xFFABB3BA),
-                          ),
+                          labelStyle:
+                              FlutterFlowTheme.of(context).title3.override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFFABB3BA),
+                                  ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00000000),
@@ -176,10 +178,10 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                             ),
                           ),
                         ),
-                        style: FlutterFlowTheme.title3.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0xFFF1F4F8),
-                        ),
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Lexend Deca',
+                              color: Color(0xFFF1F4F8),
+                            ),
                       ),
                     ),
                   ),
@@ -203,10 +205,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Short Description',
-                            labelStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFFABB3BA),
-                            ),
+                            labelStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFFABB3BA),
+                                    ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0x00000000),
@@ -228,10 +231,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                               ),
                             ),
                           ),
-                          style: FlutterFlowTheme.subtitle2.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFFF1F4F8),
-                          ),
+                          style:
+                              FlutterFlowTheme.of(context).subtitle2.override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Color(0xFFF1F4F8),
+                                  ),
                           maxLines: 4,
                           keyboardType: TextInputType.multiline,
                         ),
@@ -258,22 +262,16 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                         color: Colors.white,
                       ),
                       child: FlutterFlowDropDown(
-                        initialOption: dropDownValue ??= 'Experience Level',
-                        options: [
-                          '< 6 Months',
-                          '6m - 1y',
-                          '1y - 3y',
-                          '+3 years',
-                          '+5 years',
-                          '+8 years'
-                        ].toList(),
+                        initialOption: dropDownValue ??= 'Bio',
+                        options: ['Male', 'Female'].toList(),
                         onChanged: (val) => setState(() => dropDownValue = val),
                         width: 130,
                         height: 40,
-                        textStyle: FlutterFlowTheme.subtitle2.override(
-                          fontFamily: 'Poppins',
-                          color: Color(0xFFABB3BA),
-                        ),
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFFABB3BA),
+                                ),
                         icon: FaIcon(
                           FontAwesomeIcons.chevronDown,
                           color: Color(0xFFABB3BA),
@@ -309,10 +307,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Company',
-                            labelStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFFABB3BA),
-                            ),
+                            labelStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFFABB3BA),
+                                    ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0x00000000),
@@ -334,10 +333,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                               ),
                             ),
                           ),
-                          style: FlutterFlowTheme.subtitle2.override(
-                            fontFamily: 'Poppins',
-                            color: Colors.transparent,
-                          ),
+                          style:
+                              FlutterFlowTheme.of(context).subtitle2.override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.transparent,
+                                  ),
                         ),
                       ),
                     ),
@@ -374,10 +374,11 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                             width: 130,
                             height: 50,
                             color: Color(0xFFF1F4F8),
-                            textStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFFABB3BA),
-                            ),
+                            textStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFFABB3BA),
+                                    ),
                             borderSide: BorderSide(
                               color: Colors.transparent,
                               width: 1,

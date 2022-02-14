@@ -44,12 +44,12 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
         automaticallyImplyLeading: false,
         title: Text(
           'Create Post',
-          style: FlutterFlowTheme.title2.override(
-            fontFamily: 'Lexend Deca',
-            color: Color(0xFF090F13),
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
+          style: FlutterFlowTheme.of(context).title2.override(
+                fontFamily: 'Lexend Deca',
+                color: Color(0xFF090F13),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
         ),
         actions: [
           Padding(
@@ -153,11 +153,12 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           options: FFButtonOptions(
                             width: 260,
                             height: 40,
-                            color: FlutterFlowTheme.primaryColor,
-                            textStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Colors.white,
-                            ),
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                            textStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: Colors.white,
+                                    ),
                             borderSide: BorderSide(
                               color: Colors.transparent,
                               width: 1,
@@ -173,10 +174,11 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           obscureText: false,
                           decoration: InputDecoration(
                             hintText: 'Title',
-                            hintStyle: FlutterFlowTheme.bodyText1.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Color(0xFF8B97A2),
-                            ),
+                            hintStyle:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: Color(0xFF8B97A2),
+                                    ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0xFFDBE2E7),
@@ -191,13 +193,15 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            filled: true,
                             contentPadding:
                                 EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
                           ),
-                          style: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFF090F13),
-                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Color(0xFF090F13),
+                                  ),
                           textAlign: TextAlign.start,
                         ),
                       ),
@@ -212,13 +216,14 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   hintText: 'Comment....',
-                                  hintStyle:
-                                      FlutterFlowTheme.bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .bodyText2
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: Color(0xFF8B97A2),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0xFFDBE2E7),
@@ -233,16 +238,19 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                     ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
+                                  filled: true,
                                   contentPadding:
                                       EdgeInsetsDirectional.fromSTEB(
                                           20, 32, 20, 12),
                                 ),
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Lexend Deca',
-                                  color: Color(0xFF090F13),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: Color(0xFF090F13),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                    ),
                                 textAlign: TextAlign.start,
                                 maxLines: 4,
                               ),
@@ -268,10 +276,11 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                             width: double.infinity,
                             height: 40,
                             color: Colors.white,
-                            textStyle: FlutterFlowTheme.subtitle2.override(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFF8B97A2),
-                            ),
+                            textStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFF8B97A2),
+                                    ),
                             borderSide: BorderSide(
                               color: Color(0xFFDBE2E7),
                               width: 1,
@@ -300,6 +309,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                   photoUrl: uploadedFileUrl,
                   jobName: textController1.text,
                   timeCreated: getCurrentTimestamp,
+                  postedBy: currentUserReference,
                 );
                 await JobPostsRecord.collection.doc().set(jobPostsCreateData);
                 Navigator.pop(context);
@@ -309,12 +319,12 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                 width: 270,
                 height: 60,
                 color: Color(0xFF4B39EF),
-                textStyle: FlutterFlowTheme.subtitle2.override(
-                  fontFamily: 'Lexend Deca',
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                      fontFamily: 'Lexend Deca',
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                 elevation: 3,
                 borderSide: BorderSide(
                   color: Colors.transparent,

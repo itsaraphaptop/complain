@@ -49,6 +49,10 @@ abstract class JobPostsRecord
   String get photoUrl;
 
   @nullable
+  @BuiltValueField(wireName: 'like_count')
+  int get likeCount;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -61,7 +65,8 @@ abstract class JobPostsRecord
     ..likedPost = false
     ..myJob = false
     ..salary = ''
-    ..photoUrl = '';
+    ..photoUrl = ''
+    ..likeCount = 0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('jobPosts');
@@ -97,6 +102,7 @@ Map<String, dynamic> createJobPostsRecordData({
   String salary,
   DateTime timeCreated,
   String photoUrl,
+  int likeCount,
 }) =>
     serializers.toFirestore(
         JobPostsRecord.serializer,
@@ -112,4 +118,5 @@ Map<String, dynamic> createJobPostsRecordData({
           ..postedBy = postedBy
           ..salary = salary
           ..timeCreated = timeCreated
-          ..photoUrl = photoUrl));
+          ..photoUrl = photoUrl
+          ..likeCount = likeCount));
