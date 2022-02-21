@@ -18,35 +18,12 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  TextEditingController searchFieldController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    super.initState();
-    searchFieldController = TextEditingController();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Color(0xFFF1F5F8),
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Welcome',
-          style: FlutterFlowTheme.of(context).title1.override(
-                fontFamily: 'Lexend Deca',
-                color: Color(0xFF090F13),
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        actions: [],
-        centerTitle: false,
-        elevation: 2,
-      ),
       backgroundColor: Color(0xFFF1F5F8),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -57,7 +34,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           );
         },
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        backgroundColor: Color(0xFF2364A7),
         elevation: 8,
         child: Icon(
           Icons.add_rounded,
@@ -71,51 +48,110 @@ class _HomeWidgetState extends State<HomeWidget> {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Material(
-                color: Colors.transparent,
-                elevation: 3,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF1F5F8),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 4, 20, 0),
-                    child: TextFormField(
-                      controller: searchFieldController,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText: 'Search for classes...',
-                        hintText: 'Search by name, location etc...',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xFF262D34),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xFF262D34),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: Color(0xFF95A1AC),
+              StreamBuilder<List<UsersRecord>>(
+                stream: queryUsersRecord(
+                  queryBuilder: (usersRecord) =>
+                      usersRecord.where('uid', isEqualTo: currentUserUid),
+                  singleRecord: true,
+                ),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: FlutterFlowTheme.of(context).primaryColor,
                         ),
                       ),
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFF95A1AC),
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
+                    );
+                  }
+                  List<UsersRecord> containerUsersRecordList = snapshot.data;
+                  // Return an empty Container when the document does not exist.
+                  if (snapshot.data.isEmpty) {
+                    return Container();
+                  }
+                  final containerUsersRecord =
+                      containerUsersRecordList.isNotEmpty
+                          ? containerUsersRecordList.first
+                          : null;
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).tertiaryColor,
                     ),
-                  ),
-                ),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                                child: Container(
+                                  width: 76,
+                                  height: 76,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.network(
+                                    containerUsersRecord.photoUrl,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                                child: Text(
+                                  containerUsersRecord.displayName,
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: Color(0xFF090F13),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                                child: Text(
+                                  containerUsersRecord.email,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: Color(0xFF93E4E8),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -145,9 +181,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                           child: StreamBuilder<List<JobPostsRecord>>(
                             stream: queryJobPostsRecord(
-                              queryBuilder: (jobPostsRecord) => jobPostsRecord
-                                  .where('myJob', isEqualTo: true)
-                                  .where('postedBy',
+                              queryBuilder: (jobPostsRecord) =>
+                                  jobPostsRecord.where('postedBy',
                                       isEqualTo: currentUserReference),
                             ),
                             builder: (context, snapshot) {
@@ -230,7 +265,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                   'Lexend Deca',
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 24,
+                                                              fontSize: 20,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -404,302 +439,320 @@ class _HomeWidgetState extends State<HomeWidget> {
                             },
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
-                          child: AuthUserStreamWidget(
-                            child: StreamBuilder<List<JobPostsRecord>>(
-                              stream: queryJobPostsRecord(
-                                queryBuilder: (jobPostsRecord) => jobPostsRecord
-                                    .where('postedBy',
-                                        isNotEqualTo: currentUserReference)
-                                    .where('likedPost',
-                                        isNotEqualTo:
-                                            currentUserDocument?.likedPosts),
-                              ),
-                              builder: (context, snapshot) {
-                                // Customize what your widget looks like when it's loading.
-                                if (!snapshot.hasData) {
-                                  return Center(
-                                    child: SizedBox(
-                                      width: 50,
-                                      height: 50,
-                                      child: CircularProgressIndicator(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryColor,
+                        ListView(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
+                              child: StreamBuilder<List<JobPostsRecord>>(
+                                stream: queryJobPostsRecord(
+                                  queryBuilder: (jobPostsRecord) =>
+                                      jobPostsRecord.where('postedBy',
+                                          isNotEqualTo: currentUserReference),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }
-                                List<JobPostsRecord>
-                                    columnScrollJobPostsRecordList =
-                                    snapshot.data;
-                                return SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: List.generate(
-                                        columnScrollJobPostsRecordList.length,
-                                        (columnScrollIndex) {
-                                      final columnScrollJobPostsRecord =
-                                          columnScrollJobPostsRecordList[
-                                              columnScrollIndex];
-                                      return Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 12, 0, 0),
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          height: 140,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryColor,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 3,
-                                                color: Color(0x33000000),
-                                                offset: Offset(0, 2),
-                                              )
-                                            ],
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
+                                    );
+                                  }
+                                  List<JobPostsRecord>
+                                      columnScrollJobPostsRecordList =
+                                      snapshot.data;
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: List.generate(
+                                          columnScrollJobPostsRecordList.length,
+                                          (columnScrollIndex) {
+                                        final columnScrollJobPostsRecord =
+                                            columnScrollJobPostsRecordList[
+                                                columnScrollIndex];
+                                        return Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 12, 0, 0),
                                           child: Container(
-                                            width: 100,
-                                            height: 50,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 140,
                                             decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: Image.asset(
-                                                  'assets/images/Smileman_Cover_Facebook.jpg',
-                                                ).image,
-                                              ),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  blurRadius: 3,
+                                                  color: Color(0x33000000),
+                                                  offset: Offset(0, 2),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                             ),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(16, 16, 16, 0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text(
-                                                          columnScrollJobPostsRecord
-                                                              .jobName,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .title1
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Lexend Deca',
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 24,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .chevron_right_rounded,
-                                                        color: Colors.white,
-                                                        size: 24,
-                                                      ),
-                                                    ],
-                                                  ),
+                                            child: Container(
+                                              width: 100,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: Image.asset(
+                                                    'assets/images/Smileman_Cover_Facebook.jpg',
+                                                  ).image,
                                                 ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(16, 4, 16, 0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        child: StreamBuilder<
-                                                            UsersRecord>(
-                                                          stream: UsersRecord
-                                                              .getDocument(
-                                                                  columnScrollJobPostsRecord
-                                                                      .postedBy),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            // Customize what your widget looks like when it's loading.
-                                                            if (!snapshot
-                                                                .hasData) {
-                                                              return Center(
-                                                                child: SizedBox(
-                                                                  width: 50,
-                                                                  height: 50,
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryColor,
-                                                                  ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                16, 16, 16, 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            columnScrollJobPostsRecord
+                                                                .jobName,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .title1
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Lexend Deca',
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
-                                                              );
-                                                            }
-                                                            final textUsersRecord =
-                                                                snapshot.data;
-                                                            return Text(
-                                                              textUsersRecord
-                                                                  .displayName,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyText2
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Lexend Deca',
-                                                                    color: Color(
-                                                                        0xFFFEFF00),
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
-                                                            );
-                                                          },
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Icon(
+                                                          Icons
+                                                              .chevron_right_rounded,
+                                                          color: Colors.white,
+                                                          size: 24,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(16, 15, 16, 16),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      FFButtonWidget(
-                                                        onPressed: () async {
-                                                          await Navigator
-                                                              .pushAndRemoveUntil(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ContentWidget(
-                                                                postid:
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                16, 4, 16, 0),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Expanded(
+                                                          child: StreamBuilder<
+                                                              UsersRecord>(
+                                                            stream: UsersRecord
+                                                                .getDocument(
                                                                     columnScrollJobPostsRecord
-                                                                        .jobName,
-                                                              ),
-                                                            ),
-                                                            (r) => false,
-                                                          );
-                                                        },
-                                                        text: 'View',
-                                                        options:
-                                                            FFButtonOptions(
-                                                          width: 120,
-                                                          height: 40,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryColor,
-                                                          textStyle: GoogleFonts
-                                                              .getFont(
-                                                            'Lexend Deca',
-                                                            color: Colors.white,
-                                                            fontSize: 14,
-                                                          ),
-                                                          elevation: 3,
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Colors
-                                                                .transparent,
-                                                            width: 1,
-                                                          ),
-                                                          borderRadius: 8,
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          4),
-                                                              child: Text(
-                                                                dateTimeFormat(
-                                                                    'Hm',
-                                                                    columnScrollJobPostsRecord
-                                                                        .timeCreated),
+                                                                        .postedBy),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              // Customize what your widget looks like when it's loading.
+                                                              if (!snapshot
+                                                                  .hasData) {
+                                                                return Center(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }
+                                                              final textUsersRecord =
+                                                                  snapshot.data;
+                                                              return Text(
+                                                                textUsersRecord
+                                                                    .displayName,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .title3
+                                                                    .bodyText2
                                                                     .override(
                                                                       fontFamily:
                                                                           'Lexend Deca',
-                                                                      color: Colors
-                                                                          .white,
+                                                                      color: Color(
+                                                                          0xFFFEFF00),
                                                                       fontSize:
-                                                                          20,
+                                                                          14,
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .bold,
+                                                                              .normal,
+                                                                    ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                16, 15, 16, 16),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        FFButtonWidget(
+                                                          onPressed: () async {
+                                                            await Navigator
+                                                                .pushAndRemoveUntil(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ContentWidget(
+                                                                  postid:
+                                                                      columnScrollJobPostsRecord
+                                                                          .jobName,
+                                                                ),
+                                                              ),
+                                                              (r) => false,
+                                                            );
+                                                          },
+                                                          text: 'View',
+                                                          options:
+                                                              FFButtonOptions(
+                                                            width: 120,
+                                                            height: 40,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryColor,
+                                                            textStyle:
+                                                                GoogleFonts
+                                                                    .getFont(
+                                                              'Lexend Deca',
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 14,
+                                                            ),
+                                                            elevation: 3,
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color: Colors
+                                                                  .transparent,
+                                                              width: 1,
+                                                            ),
+                                                            borderRadius: 8,
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0,
+                                                                            0,
+                                                                            0,
+                                                                            4),
+                                                                child: Text(
+                                                                  dateTimeFormat(
+                                                                      'Hm',
+                                                                      columnScrollJobPostsRecord
+                                                                          .timeCreated),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .title3
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Lexend Deca',
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            20,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                dateTimeFormat(
+                                                                    'MMMEd',
+                                                                    columnScrollJobPostsRecord
+                                                                        .timeCreated),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Lexend Deca',
+                                                                      color: Color(
+                                                                          0xB4FFFFFF),
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
                                                                     ),
                                                               ),
-                                                            ),
-                                                            Text(
-                                                              dateTimeFormat(
-                                                                  'MMMEd',
-                                                                  columnScrollJobPostsRecord
-                                                                      .timeCreated),
-                                                              textAlign:
-                                                                  TextAlign.end,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyText1
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Lexend Deca',
-                                                                    color: Color(
-                                                                        0xB4FFFFFF),
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                );
-                              },
+                                        );
+                                      }),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),

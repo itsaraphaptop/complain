@@ -1,12 +1,15 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
+import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
+import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditProfileWidget extends StatefulWidget {
@@ -22,10 +25,10 @@ class EditProfileWidget extends StatefulWidget {
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
+  String dropDownValue;
   String uploadedFileUrl = '';
   TextEditingController textController1;
   TextEditingController emailAddressController;
-  TextEditingController myBioController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -59,7 +62,12 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             automaticallyImplyLeading: false,
             leading: InkWell(
               onTap: () async {
-                Navigator.pop(context);
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavBarPage(initialPage: 'Profile'),
+                  ),
+                );
               },
               child: Icon(
                 Icons.arrow_back_rounded,
@@ -278,55 +286,26 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
-                  child: TextFormField(
-                    controller: myBioController ??= TextEditingController(
-                      text: editProfileUsersRecord.bio,
+                  child: FlutterFlowDropDown(
+                    initialOption: dropDownValue ??= editProfileUsersRecord.bio,
+                    options: ['Male', 'Female'].toList(),
+                    onChanged: (val) => setState(() => dropDownValue = val),
+                    width: MediaQuery.of(context).size.width,
+                    height: 55,
+                    textStyle: FlutterFlowTheme.of(context).bodyText1,
+                    hintText: 'Bio',
+                    icon: FaIcon(
+                      FontAwesomeIcons.chevronDown,
+                      color: Color(0xFFABB3BA),
+                      size: 16,
                     ),
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      labelText: 'Bio',
-                      labelStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Color(0xFF95A1AC),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                      hintText: 'A little about you...',
-                      hintStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Color(0xFF95A1AC),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFFDBE2E7),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFFDBE2E7),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding:
-                          EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0xFF14181B),
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                    textAlign: TextAlign.start,
-                    maxLines: 3,
+                    fillColor: Colors.white,
+                    elevation: 0,
+                    borderColor: Color(0xFFDBE2E7),
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    margin: EdgeInsetsDirectional.fromSTEB(20, 4, 8, 4),
+                    hidesUnderline: true,
                   ),
                 ),
                 Align(
@@ -339,7 +318,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           displayName: textController1?.text ?? '',
                           email: emailAddressController.text,
                           photoUrl: uploadedFileUrl,
-                          bio: myBioController?.text ?? '',
+                          bio: dropDownValue,
                         );
                         await editProfileUsersRecord.reference
                             .update(usersUpdateData);

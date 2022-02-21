@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../change_password/change_password_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -240,8 +241,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FFButtonWidget(
-                            onPressed: () {
-                              print('ButtonForgotPassword pressed ...');
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChangePasswordWidget(),
+                                ),
+                              );
                             },
                             text: 'Forgot Password?',
                             options: FFButtonOptions(
@@ -252,9 +258,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   .subtitle2
                                   .override(
                                     fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF090F13),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 8,
                                   ),
                               elevation: 0,
                               borderSide: BorderSide(

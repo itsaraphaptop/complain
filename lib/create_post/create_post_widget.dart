@@ -2,13 +2,11 @@ import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/place.dart';
 import '../flutter_flow/upload_media.dart';
-import 'dart:io';
+import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +24,6 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
   String uploadedFileUrl = '';
   TextEditingController textController1;
   TextEditingController textController2;
-  var placePickerValue = FFPlace();
 
   @override
   void initState() {
@@ -64,7 +61,12 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                 size: 30,
               ),
               onPressed: () async {
-                Navigator.pop(context);
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavBarPage(initialPage: 'Home'),
+                  ),
+                );
               },
             ),
           ),
@@ -258,37 +260,6 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                        child: FlutterFlowPlacePicker(
-                          iOSGoogleMapsApiKey: '',
-                          androidGoogleMapsApiKey: '',
-                          webGoogleMapsApiKey: '',
-                          onSelect: (place) =>
-                              setState(() => placePickerValue = place),
-                          defaultText: 'Select Location',
-                          icon: Icon(
-                            Icons.place,
-                            color: Color(0xFFDBE2E7),
-                            size: 25,
-                          ),
-                          buttonOptions: FFButtonOptions(
-                            width: double.infinity,
-                            height: 40,
-                            color: Colors.white,
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Poppins',
-                                      color: Color(0xFF8B97A2),
-                                    ),
-                            borderSide: BorderSide(
-                              color: Color(0xFFDBE2E7),
-                              width: 1,
-                            ),
-                            borderRadius: 12,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -310,15 +281,21 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                   jobName: textController1.text,
                   timeCreated: getCurrentTimestamp,
                   postedBy: currentUserReference,
+                  jobCompany: '',
                 );
                 await JobPostsRecord.collection.doc().set(jobPostsCreateData);
-                Navigator.pop(context);
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavBarPage(initialPage: 'Home'),
+                  ),
+                );
               },
               text: 'Create Post',
               options: FFButtonOptions(
                 width: 270,
                 height: 60,
-                color: Color(0xFF4B39EF),
+                color: Color(0xFF2364A7),
                 textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                       fontFamily: 'Lexend Deca',
                       color: Colors.white,

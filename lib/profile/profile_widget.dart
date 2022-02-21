@@ -1,9 +1,11 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../change_password/change_password_widget.dart';
 import '../edit_profile/edit_profile_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../history_post/history_post_widget.dart';
 import '../login/login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -153,14 +155,23 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                                 child: FaIcon(
                                   FontAwesomeIcons.solidStar,
-                                  color: Colors.black,
+                                  color: Color(0xFFFF4D00),
                                   size: 24,
                                 ),
                               ),
                               if ((profileUsersRecord.likeCount) > 0)
-                                Text(
-                                  profileUsersRecord.likeCount.toString(),
-                                  style: FlutterFlowTheme.of(context).bodyText1,
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      5, 0, 0, 0),
+                                  child: Text(
+                                    profileUsersRecord.likeCount.toString(),
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0xFFFF4D00),
+                                        ),
+                                  ),
                                 ),
                             ],
                           ),
@@ -208,35 +219,45 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             color: Colors.white,
                             shape: BoxShape.rectangle,
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
-                                  'Order History',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: Color(0xFF090F13),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                      ),
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HistoryPostWidget(),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(0.9, 0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Color(0xFF95A1AC),
-                                    size: 18,
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      24, 0, 0, 0),
+                                  child: Text(
+                                    'Order History',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Lexend Deca',
+                                          color: Color(0xFF090F13),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(0.9, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Color(0xFF95A1AC),
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -253,127 +274,46 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               color: Colors.white,
                               shape: BoxShape.rectangle,
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      24, 0, 0, 0),
-                                  child: Text(
-                                    'Settings',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Color(0xFF090F13),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChangePasswordWidget(),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.9, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 18,
+                                );
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        24, 0, 0, 0),
+                                    child: Text(
+                                      'Change Password',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: Color(0xFF090F13),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      24, 0, 0, 0),
-                                  child: Text(
-                                    'Notifications',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Color(0xFF090F13),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.9, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 18,
+                                  Expanded(
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0.9, 0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Color(0xFF95A1AC),
+                                        size: 18,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      24, 0, 0, 0),
-                                  child: Text(
-                                    'Change Password',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: Color(0xFF090F13),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.9, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 18,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],

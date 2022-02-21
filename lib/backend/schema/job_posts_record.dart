@@ -53,6 +53,10 @@ abstract class JobPostsRecord
   int get likeCount;
 
   @nullable
+  @BuiltValueField(wireName: 'user_approve')
+  BuiltList<DocumentReference> get userApprove;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -66,7 +70,8 @@ abstract class JobPostsRecord
     ..myJob = false
     ..salary = ''
     ..photoUrl = ''
-    ..likeCount = 0;
+    ..likeCount = 0
+    ..userApprove = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('jobPosts');
@@ -119,4 +124,5 @@ Map<String, dynamic> createJobPostsRecordData({
           ..salary = salary
           ..timeCreated = timeCreated
           ..photoUrl = photoUrl
-          ..likeCount = likeCount));
+          ..likeCount = likeCount
+          ..userApprove = null));

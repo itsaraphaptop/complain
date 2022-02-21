@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'schema/users_record.dart';
 import 'schema/job_posts_record.dart';
 import 'schema/save_post_record.dart';
+import 'schema/user_friends_record.dart';
 import 'schema/serializers.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +17,7 @@ export 'schema/serializers.dart';
 export 'schema/users_record.dart';
 export 'schema/job_posts_record.dart';
 export 'schema/save_post_record.dart';
+export 'schema/user_friends_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Stream<List<UsersRecord>> queryUsersRecord(
@@ -60,6 +62,22 @@ Future<List<SavePostRecord>> querySavePostRecordOnce(
         int limit = -1,
         bool singleRecord = false}) =>
     queryCollectionOnce(SavePostRecord.collection, SavePostRecord.serializer,
+        queryBuilder: queryBuilder, limit: limit, singleRecord: singleRecord);
+
+/// Functions to query UserFriendsRecords (as a Stream and as a Future).
+Stream<List<UserFriendsRecord>> queryUserFriendsRecord(
+        {Query Function(Query) queryBuilder,
+        int limit = -1,
+        bool singleRecord = false}) =>
+    queryCollection(UserFriendsRecord.collection, UserFriendsRecord.serializer,
+        queryBuilder: queryBuilder, limit: limit, singleRecord: singleRecord);
+
+Future<List<UserFriendsRecord>> queryUserFriendsRecordOnce(
+        {Query Function(Query) queryBuilder,
+        int limit = -1,
+        bool singleRecord = false}) =>
+    queryCollectionOnce(
+        UserFriendsRecord.collection, UserFriendsRecord.serializer,
         queryBuilder: queryBuilder, limit: limit, singleRecord: singleRecord);
 
 Stream<List<T>> queryCollection<T>(

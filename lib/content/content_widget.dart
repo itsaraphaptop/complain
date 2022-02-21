@@ -1,5 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_google_map.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -12,15 +13,19 @@ class ContentWidget extends StatefulWidget {
   const ContentWidget({
     Key key,
     this.postid,
+    this.locat,
   }) : super(key: key);
 
   final String postid;
+  final JobPostsRecord locat;
 
   @override
   _ContentWidgetState createState() => _ContentWidgetState();
 }
 
 class _ContentWidgetState extends State<ContentWidget> {
+  LatLng googleMapsCenter;
+  Completer<GoogleMapController> googleMapsController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -54,6 +59,7 @@ class _ContentWidgetState extends State<ContentWidget> {
             : null;
         return Scaffold(
           key: scaffoldKey,
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
@@ -91,7 +97,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                     Image.network(
                       contentJobPostsRecord.photoUrl,
                       width: MediaQuery.of(context).size.width,
-                      height: 230,
+                      height: MediaQuery.of(context).size.height * 0.2,
                       fit: BoxFit.cover,
                     ),
                   ],
@@ -178,6 +184,51 @@ class _ContentWidgetState extends State<ContentWidget> {
                       ),
                     ],
                   ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 100,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFEEEEEE),
+                            ),
+                            child: FlutterFlowGoogleMap(
+                              controller: googleMapsController,
+                              onCameraIdle: (latLng) =>
+                                  googleMapsCenter = latLng,
+                              initialLocation: googleMapsCenter ??=
+                                  contentJobPostsRecord.jobLocation,
+                              markers: [
+                                if (contentJobPostsRecord != null)
+                                  FlutterFlowMarker(
+                                    contentJobPostsRecord.reference.path,
+                                    contentJobPostsRecord.jobLocation,
+                                  ),
+                              ],
+                              markerColor: GoogleMarkerColor.violet,
+                              mapType: MapType.normal,
+                              style: GoogleMapStyle.standard,
+                              initialZoom: 14,
+                              allowInteraction: true,
+                              allowZoom: true,
+                              showZoomControls: true,
+                              showLocation: true,
+                              showCompass: false,
+                              showMapToolbar: false,
+                              showTraffic: false,
+                              centerMapOnMarkerTap: true,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 12),
@@ -268,71 +319,50 @@ class _ContentWidgetState extends State<ContentWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 24),
-                  child: StreamBuilder<List<SavePostRecord>>(
-                    stream: querySavePostRecord(
-                      singleRecord: true,
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      List<SavePostRecord> buttonPrimarySavePostRecordList =
-                          snapshot.data;
-                      // Return an empty Container when the document does not exist.
-                      if (snapshot.data.isEmpty) {
-                        return Container();
-                      }
-                      final buttonPrimarySavePostRecord =
-                          buttonPrimarySavePostRecordList.isNotEmpty
-                              ? buttonPrimarySavePostRecordList.first
-                              : null;
-                      return FFButtonWidget(
-                        onPressed: () async {
-                          final savePostUpdateData = {
-                            ...createSavePostRecordData(
-                              postSaved: contentJobPostsRecord.reference,
-                              user: contentJobPostsRecord.postedBy,
-                            ),
-                            'count_post': FieldValue.increment(1),
-                          };
-                          await buttonPrimarySavePostRecord.reference
-                              .update(savePostUpdateData);
+                  child: FFButtonWidget(
+                    onPressed: () async {
+                      final usersUpdateData = {
+                        ...createUsersRecordData(
+                          likedPosts: true,
+                        ),
+                        'like_count': FieldValue.increment(1),
+                      };
+                      await contentJobPostsRecord.postedBy
+                          .update(usersUpdateData);
 
-                          final jobPostsUpdateData = {
-                            'like_count': FieldValue.increment(1),
-                          };
-                          await contentJobPostsRecord.reference
-                              .update(jobPostsUpdateData);
-                        },
-                        text: 'Verify',
-                        options: FFButtonOptions(
-                          width: 300,
-                          height: 60,
-                          color: FlutterFlowTheme.of(context).primaryColor,
-                          textStyle:
-                              FlutterFlowTheme.of(context).title3.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                            width: 1,
-                          ),
-                          borderRadius: 12,
+                      final savePostCreateData = createSavePostRecordData(
+                        postSaved: contentJobPostsRecord.reference,
+                        user: currentUserReference,
+                        savedTime: getCurrentTimestamp,
+                        countPost: contentJobPostsRecord.likeCount,
+                      );
+                      await SavePostRecord.collection
+                          .doc()
+                          .set(savePostCreateData);
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NavBarPage(initialPage: 'Home'),
                         ),
                       );
                     },
+                    text: 'Verify',
+                    options: FFButtonOptions(
+                      width: 300,
+                      height: 60,
+                      color: Color(0xFF2364A7),
+                      textStyle: FlutterFlowTheme.of(context).title3.override(
+                            fontFamily: 'Lexend Deca',
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1,
+                      ),
+                      borderRadius: 12,
+                    ),
                   ),
                 ),
               ],

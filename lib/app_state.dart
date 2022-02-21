@@ -19,6 +19,8 @@ class FFAppState {
   SharedPreferences prefs;
 
   int count = 0;
+
+  DateTime calendar;
 }
 
 LatLng _latLngFromString(String val) {

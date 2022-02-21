@@ -12,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home/home_widget.dart';
+import 'calenda_post/calenda_post_widget.dart';
 import 'member/member_widget.dart';
 import 'profile/profile_widget.dart';
 
@@ -73,7 +74,6 @@ class _MyAppState extends State<MyApp> {
       locale: _locale,
       supportedLocales: const [Locale('en', '')],
       theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
       themeMode: _themeMode,
       home: initialUser == null || displaySplashImage
           ? Container(
@@ -115,6 +115,7 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'Home': HomeWidget(),
+      'calendaPost': CalendaPostWidget(),
       'Member': MemberWidget(),
       'Profile': ProfileWidget(),
     };
@@ -138,6 +139,14 @@ class _NavBarPageState extends State<NavBarPage> {
             ),
             activeIcon: Icon(
               Icons.home,
+              size: 24,
+            ),
+            label: 'Home',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.calendar_today_rounded,
               size: 24,
             ),
             label: 'Home',
